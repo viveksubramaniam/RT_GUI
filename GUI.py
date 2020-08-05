@@ -50,6 +50,7 @@ FPS = 30
 with Listener (on_click=on_click) as listener:
     listener.join()'''
 
+
 # font
 
 
@@ -94,6 +95,18 @@ def text_format(message, text_size, text_colour):
 def send_data():
     return
     # main menu
+
+
+def pygame_convert(RA, DEC):
+    py_convert = True
+    alt, az = (0.0, 0.0)
+    while py_convert:
+        alt, az = RAD.convert(RA, DEC, 0)
+        pygame.time.delay(1000)
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                alt, az = RAD.convert(RA, DEC, 1)
+                main_menu()
 
 
 def main_menu():
@@ -291,10 +304,8 @@ def RAT():
             text_long_render = text_format(text_long, 30, white)
 
         if convert == 1:
-            file = open('Ra-Dec.txt', 'a+')
-            file.write(str(text_long) + '\t' + str(text_lat) + '\n')
-            file.close()
-            RAD.convert(float(text_lat), float(text_long))
+            pygame_convert(float(text_lat), float(text_long))
+            main_menu()
 
         lat_rect_io.w = max(200, text_lat_render.get_width()+10)
         long_rect_io.w = max(200, text_long_render.get_width()+10)
